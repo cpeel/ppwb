@@ -44,11 +44,17 @@ if ($user_htmlfile == "") {
 // ----- run the pphtml command ----------------------------------------
 
 // build the command
-// $scommand = './pphtml -i ' . $target_name . ' -o ' . $workdir; // orthogonal
-// $scommand = './bin/pphtml -i ' . $user_htmlfile . ' -o ' . $workdir . "/report.html";
-$scommand = 'python3 ./bin/pphtml.py -i "' . $user_htmlfile . '" -o ' . $workdir . "/report.html";
+$scommand = join(" ", [
+    "python3",
+    "./bin/pphtml.py",
+    "-i " . escapeshellarg($user_htmlfile),
+    "-o " . escapeshellarg("$workdir/report.html")
+]);
 
-$command = escapeshellcmd($scommand) . " 2>&1";
+$command = join(" ", [
+    escapeshellcmd($scommand),
+    "2>&1"
+]);
 
 // echo $command;
 file_put_contents("$workdir/command.txt", $command);
